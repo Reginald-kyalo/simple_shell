@@ -12,16 +12,7 @@
  */
 void type_prompt(void)
 {
-	static int first_time = 1;
-	char *clear_screen;
 	char *prompt = "$ ";
-
-	if (first_time)
-	{
-		clear_screen = "\x1B[1;1H\x1B[2J";
-		write(STDOUT_FILENO, clear_screen, 11);
-		first_time = 0;
-	}
 
 	write(STDOUT_FILENO, prompt, _strlen(prompt));
 	fflush(stdout);
