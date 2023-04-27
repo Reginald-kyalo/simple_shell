@@ -87,11 +87,10 @@ int execute(char **args)
 	if (pid == 0)
 	{
 		if (execve(args[0], args, environ) == -1)
-			{
-				free(args);
-				return (1);
-			}
-	
+		{
+			free(args);
+			return (1);
+		}
 	}
 	else
 	{
@@ -154,6 +153,8 @@ int handle_builtin(char **args)
 
 /**
  * main - runs simple shell
+ * @argc: number of command line arguments
+ * @argv: stores command line arguments
  *
  * Return: 0 always
  */
@@ -169,7 +170,7 @@ int main(int argc, char **argv)
 		commands = read_commands(input);
 		if (handle_builtin(commands) == 1)
 		{
-			if(execute(commands) == 1 && argc == 1)
+			if (execute(commands) == 1 && argc == 1)
 			{
 				message = argv[0];
 				perror(message);
