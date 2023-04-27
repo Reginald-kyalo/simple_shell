@@ -13,7 +13,7 @@ extern char **environ;
 
 void type_prompt(void);
 char **read_commands(char *input);
-void execute(char **args);
+int execute(char **args);
 int handle_builtin(char **args);
 
 int _strcspn(const char *str, const char *discard);

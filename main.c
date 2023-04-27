@@ -19,7 +19,7 @@ void type_prompt(void)
 	if (first_time)
 	{
 		clear_screen = "\x1B[1;1H\x1B[2J";
-		write(STDOUT_FILENO, clear_screen, 12);
+		write(STDOUT_FILENO, clear_screen, 11);
 		first_time = 0;
 	}
 
@@ -39,8 +39,6 @@ char **read_commands(char *input)
 	char **args;
 	int i = 0;
 	ssize_t nread;
-	char *error_args;
-	int error;
 
 	args = malloc(sizeof(char *) * MAX_ARGS);
 	if (args == NULL)
@@ -81,45 +79,35 @@ char **read_commands(char *input)
  *	saved in bin directory
  * @args: commands to be executed
  *
- * Return: nothing
+ * Return: 1 failure
  */
-void execute(char **args)
+int execute(char **args)
 {
 	pid_t pid =  fork();
 	int status;
-	char *error_fork;
-	char *error_execve;
 
 	if (pid < 0)
 	{
 		perror("fork");
-		error_fork = "something went wrong\n";
-		write(STDOUT_FILENO, error_fork, _strlen(error_fork));
+		free(args);
 		exit(EXIT_FAILURE);
 	}
 
 	if (pid == 0)
 	{
-		if ((_strcmp(args[0], "ls")) == 0)
-		{
-			if (execve("/bin/ls", args, NULL) == -1)
+		if (execve(args[0], args, environ) == -1)
 			{
-				perror("execve");
-				exit(EXIT_FAILURE);
+				free(args);
+				return (1);
 			}
-		}
-		if (execve(args[0], args, 0) == -1)
-		{
-			perror("execve");
-			error_execve = "command not found\n";
-			write(STDOUT_FILENO, error_execve, _strlen(error_execve));
-			exit(EXIT_FAILURE);
-		}
+	
 	}
 	else
 	{
 		waitpid(pid, &status, 0);
 	}
+	free(args);
+	return (0);
 }
 
 /**
@@ -178,10 +166,11 @@ int handle_builtin(char **args)
  *
  * Return: 0 always
  */
-int main(void)
+int main(int argc, char **argv)
 {
 	char input[MAX_IN];
 	char **commands = NULL;
+	char *message = NULL;
 
 	while (1)
 	{
@@ -189,9 +178,12 @@ int main(void)
 		commands = read_commands(input);
 		if (handle_builtin(commands) == 1)
 		{
-			execute(commands);
+			if(execute(commands) == 1 && argc == 1)
+			{
+				message = argv[0];
+				perror(message);
+			}
 		}
 	}
 	return (0);
 }
-
