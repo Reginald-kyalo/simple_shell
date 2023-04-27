@@ -5,6 +5,7 @@
  * @argc: argument count
  * @argv: list of arguments
  * @env: list of env vars
+ *
  * Return: Always 0 (Success)
  */
 
@@ -25,10 +26,10 @@ int main(int argc, char *argv[], char **env)
 		string = strtow(ptr);
 		if (!string)
 		{
-			free_cpt(99, 1, ptr);
+			free_cptrn(99, 1, ptr);
 			continue;
 		}
-		free_cpt(99, 1, ptr);
+		free_cptrn(99, 1, ptr);
 		if (shell_built(string, env))
 			continue;
 		parent = fork();
@@ -63,14 +64,14 @@ int prompt(char **ptr)
 	int len;
 
 	if (isatty(STDIN_FILENO))
-		write(STDOUT_FILENO, "Fuji$ ", 6);
+		write(STDOUT_FILENO, "$ ", 6);
 	len = getline(ptr, &size, stdin);
 	if (len == EOF)
-		free_cpt(-1, 1, *ptr);
+		free_cptrn(-1, 1, *ptr);
 	(*ptr)[len - 1] = '\0';
 	if (*(*ptr) == '\0' || (*(*ptr) == '.' && (*ptr)[1] == '\0'))
 	{
-		free_cpt(99, 1, *ptr);
+		free_cptrn(99, 1, *ptr);
 		return (-1);
 	}
 	else

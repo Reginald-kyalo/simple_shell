@@ -65,11 +65,11 @@ void error_exit(char *argv, int status)
 
 
 /**
-* free_cpt - frees n amounts of strings
+* free_cptrn - frees n amounts of strings
 * @status: the status to exit with
 * @n: the number of strings to free
 */
-void free_cpt(int status, const unsigned int n, ...)
+void free_cptrn(int status, const unsigned int n, ...)
 {
 	unsigned int i;
 	va_list args;
@@ -94,7 +94,7 @@ void free_cpt(int status, const unsigned int n, ...)
 * free_arr - frees an array of char pointers
 * @array: a pointer to the array of chars
 */
-void free_arr(char **array)
+void free_array(char **array)
 {
 	int i;
 

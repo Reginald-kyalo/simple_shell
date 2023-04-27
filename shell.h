@@ -57,7 +57,6 @@ int prompt(char **ptr);
 int _atoi(char *s);
 int _strcspn(const char *str, const char *discard);
 char *_strtok(char *str, const char *delim);
-int _strcmp(char *s1, char *s2);
 char *_strchr(char *s, char c);
 int _strlen(const char *str);
 int _strncmp(const char *s1, const char *s2, int n);
