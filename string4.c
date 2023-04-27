@@ -91,7 +91,7 @@ void free_cptrn(int status, const unsigned int n, ...)
 }
 
 /**
-* free_arr - frees an array of char pointers
+* free_array - frees an array of char pointers
 * @array: a pointer to the array of chars
 */
 void free_array(char **array)
