@@ -1,106 +1,105 @@
 #include "shell.h"
 
+char *_strchr(char *s, char c);
+int _strspn(char *s, char *accept);
+int _strcmp(char *s1, char *s2);
+int _strncmp(const char *s1, const char *s2, size_t n);
+
 /**
- * _strcmp - Compare Two String
- * @s1:String 1
- * @s2:String 2
- * Return: 0 If Identical Otherwise How Much Diffrent
+ * _strchr - Locates a character in a string.
+ * @s: The string to be searched.
+ * @c: The character to be located.
+ *
+ * Return: If c is found - a pointer to the first occurence.
+ *         If c is not found - NULL.
+ */
+char *_strchr(char *s, char c)
+{
+	int index;
+
+	for (index = 0; s[index]; index++)
+	{
+		if (s[index] == c)
+			return (s + index);
+	}
+
+	return (NULL);
+}
+
+/**
+ * _strspn - Gets the length of a prefix substring.
+ * @s: The string to be searched.
+ * @accept: The prefix to be measured.
+ *
+ * Return: The number of bytes in s which
+ *         consist only of bytes from accept.
+ */
+int _strspn(char *s, char *accept)
+{
+	int bytes = 0;
+	int index;
+
+	while (*s)
+	{
+		for (index = 0; accept[index]; index++)
+		{
+			if (*s == accept[index])
+			{
+				bytes++;
+				break;
+			}
+		}
+		s++;
+	}
+	return (bytes);
+}
+
+/**
+ * _strcmp - Compares two strings.
+ * @s1: The first string to be compared.
+ * @s2: The second string to be compared.
+ *
+ * Return: Positive byte difference if s1 > s2
+ *         0 if s1 = s2
+ *         Negative byte difference if s1 < s2
  */
 int _strcmp(char *s1, char *s2)
 {
-int cmp = 0, i, len1, len2;
-len1 = _strlen(s1);
-len2 = _strlen(s2);
-
-	if (s1 == NULL || s2 == NULL)
-		return (1);
-	if (len1 != len2)
-		return (1);
-	for (i = 0; s1[i]; i++)
+	while (*s1 && *s2 && *s1 == *s2)
 	{
-		if (s1[i] != s2[i])
-		{
-			cmp = s1[i] - s2[i];
-			break;
-		}
-		else
-			continue;
+		s1++;
+		s2++;
 	}
-	return (cmp);
-}
-/**
- * _isalpha - Check if Alphabtic
- *@c: Character
- * Return: 1 If True 0 If Not
- */
-int _isalpha(int c)
-{
-if (((c >= 97) && (c <= 122)) || ((c >= 65) && (c <= 90)))
-{
-return (1);
-}
-else
-{
-return (0);
-}
-}
-/**
- * _itoa - Convert Integer To Char
- * @n: Int To Convert
- * Return: Char Pointer
- */
-char *_itoa(unsigned int n)
-{
-	int len = 0, i = 0;
-	char *s;
 
-	len = intlen(n);
-	s = malloc(len + 1);
-	if (!s)
-		return (NULL);
-	*s = '\0';
-	while (n / 10)
-	{
-		s[i] = (n % 10) + '0';
-		n /= 10;
-		i++;
-	}
-	s[i] = (n % 10) + '0';
-	array_rev(s, len);
-	s[i + 1] = '\0';
-	return (s);
-}
-/**
- *  array_rev - Reverse Array
- * @arr:Array To Reverse
- * @len:Length Of Array
- * Return: Void(Reverse Array)
- */
-void array_rev(char *arr, int len)
-{
-	int i;
-	char tmp;
+	if (*s1 != *s2)
+		return (*s1 - *s2);
 
-	for (i = 0; i < (len / 2); i++)
-	{
-		tmp = arr[i];
-		arr[i] = arr[(len - 1) - i];
-		arr[(len - 1) - i] = tmp;
-	}
+	return (0);
 }
-/**
- * intlen - Determine Length Of Int
- * @num: Given Int
- * Return: Length Of Int
- */
-int intlen(int num)
-{
-	int len = 0;
 
-	while (num != 0)
+/**
+ * _strncmp - Compare two strings.
+ * @s1: Pointer to a string.
+ * @s2: Pointer to a string.
+ * @n: The first n bytes of the strings to compare.
+ *
+ * Return: Less than 0 if s1 is shorter than s2.
+ *         0 if s1 and s2 match.
+ *         Greater than 0 if s1 is longer than s2.
+ */
+int _strncmp(const char *s1, const char *s2, size_t n)
+{
+	size_t i;
+
+	for (i = 0; s1[i] && s2[i] && i < n; i++)
 	{
-		len++;
-		num /= 10;
+		if (s1[i] > s2[i])
+			return (s1[i] - s2[i]);
+		else if (s1[i] < s2[i])
+			return (s1[i] - s2[i]);
 	}
-	return (len);
+	if (i == n)
+		return (0);
+	else
+		return (-15);
 }

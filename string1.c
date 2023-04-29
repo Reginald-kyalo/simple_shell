@@ -1,111 +1,86 @@
 #include "shell.h"
 
+int _strlen(const char *s);
+char *_strcpy(char *dest, const char *src);
+char *_strcat(char *dest, const char *src);
+char *_strncat(char *dest, const char *src, size_t n);
+
 /**
- * _strcpy - Copie Source To Destination Char
- * @dest:Destination
- * @src:Source
- * Return: Copie Of Char *
- */
-char *_strcpy(char *dest, char *src)
-{
-int i;
-
-i = 0;
-	while (src[i])
-	{
-		dest[i] = src[i];
-		i++;
-	}
-dest[i] = '\0';
-return (dest);
-}
-/**
- * _strcat - Concat Two String
- * @dest:First String
- * @src:Second String
- * Return:First String + Second String Char *
- */
-char *_strcat(char *dest, char *src)
-{
-	char *s = dest;
-
-	while (*dest != '\0')
-	{
-		dest++;
-	}
-
-	while (*src != '\0')
-	{
-		*dest = *src;
-		dest++;
-		src++;
-	}
-	*dest = '\0';
-	return (s);
-}
-/**
- * _strchr - Locate Charactere In String
- * @s:String Search In
- * @c:Char To Search For
- * Return: Pointer To Char*
- */
-char *_strchr(char *s, char c)
-{
-
-	do		{
-
-		if (*s == c)
-			{
-			break;
-			}
-		}	while (*s++);
-
-return (s);
-}
-/**
- * _strncmp - Compare Amount (n) Of Characters Of Two Strings.
- * @s1: A String.
- * @s2: A String.
- * @n: Amount Of Characters To Compare.
+ * _strlen - Returns the length of a string.
+ * @s: A pointer to the characters string.
  *
- * Return: 1 If The Strings Don't Match Otherwise 0
+ * Return: The length of the character string.
  */
-int _strncmp(const char *s1, const char *s2, size_t n)
+int _strlen(const char *s)
+{
+	int length = 0;
+
+	if (!s)
+		return (length);
+	for (length = 0; s[length]; length++)
+		;
+	return (length);
+}
+
+/**
+ * _strcpy - Copies the string pointed to by src, including the
+ *           terminating null byte, to the buffer pointed by des.
+ * @dest: Pointer to the destination of copied string.
+ * @src: Pointer to the src of the source string.
+ *
+ * Return: Pointer to dest.
+ */
+char *_strcpy(char *dest, const char *src)
 {
 	size_t i;
 
-	if (s1 == NULL)
-		return (-1);
-	for (i = 0; i < n && s2[i]; i++)
-	{
-		if (s1[i] != s2[i])
-		{
-			return (1);
-		}
-	}
-	return (0);
+	for (i = 0; src[i] != '\0'; i++)
+		dest[i] = src[i];
+	dest[i] = '\0';
+	return (dest);
 }
+
 /**
- * _strdup - Duplicate A String
- * @str:String
- * Return: Duplicate String Failed Null
+ * _strcat - Concantenates two strings.
+ * @dest: Pointer to destination string.
+ * @src: Pointer to source string.
+ *
+ * Return: Pointer to destination string.
  */
-char *_strdup(char *str)
+char *_strcat(char *dest, const char *src)
 {
-	size_t len, i;
-	char *str2;
+	char *destTemp;
+	const char *srcTemp;
 
-	len = _strlen(str);
-	str2 = malloc(sizeof(char) * (len + 1));
-	if (!str2)
-	{
-		return (NULL);
-	}
+	destTemp = dest;
+	srcTemp =  src;
 
-	for (i = 0; i <= len; i++)
-	{
-		str2[i] = str[i];
-	}
+	while (*destTemp != '\0')
+		destTemp++;
 
-	return (str2);
+	while (*srcTemp != '\0')
+		*destTemp++ = *srcTemp++;
+	*destTemp = '\0';
+	return (dest);
+}
+
+/**
+ * _strncat - Concantenates two strings where n number
+ *            of bytes are copied from source.
+ * @dest: Pointer to destination string.
+ * @src: Pointer to source string.
+ * @n: n bytes to copy from src.
+ *
+ * Return: Pointer to destination string.
+ */
+char *_strncat(char *dest, const char *src, size_t n)
+{
+	size_t dest_len = _strlen(dest);
+	size_t i;
+
+	for (i = 0; i < n && src[i] != '\0'; i++)
+		dest[dest_len + i] = src[i];
+	dest[dest_len + i] = '\0';
+
+	return (dest);
 }
